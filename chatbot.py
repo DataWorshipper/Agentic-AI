@@ -18,7 +18,8 @@ llm=HuggingFaceEndpoint(repo_id=repo_id,
                         task="text-generation",
                     max_new_tokens=512,
                  do_sample=False,
-                 huggingfacehub_api_token=hf_token
+                 huggingfacehub_api_token=hf_token,
+                 streaming=True
                         )
 model=ChatHuggingFace(llm=llm)
 memory=MemorySaver()
@@ -50,7 +51,7 @@ if __name__ == "__main__":
         for event in workflow.stream(input_message, config=config):
             for node_name, node_state in event.items():
                 ai_message = node_state["messages"][-1]
-                print(f"\nDeepSeek: {ai_message.content}")
+                print(f"\nChatbot: {ai_message.content}")
 
 
 
