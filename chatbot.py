@@ -6,12 +6,11 @@ from langchain_core.messages import BaseMessage, HumanMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-from psycopg_pool import ConnectionPool
+from database import connection_pool,db_url
 from langgraph.checkpoint.postgres import PostgresSaver
 
 load_dotenv()
 hf_token = os.getenv("HUGGINGFACE_API_KEY")
-db_url = os.getenv("DATABASE_URI")
 
 if not db_url:
     raise ValueError("DATABASE_URL not found in .env file!")
@@ -40,14 +39,6 @@ graph = StateGraph(ChatState)
 graph.add_node("chat_node", chat_node)
 graph.add_edge(START, "chat_node")
 graph.add_edge("chat_node", END)
-
-
-connection_pool = ConnectionPool(
-    conninfo=db_url,
-    max_size=20,
-    kwargs={"autocommit": True} 
-)
-
 
 memory = PostgresSaver(connection_pool)
 memory.setup()
