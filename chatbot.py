@@ -26,8 +26,9 @@ llm = HuggingFaceEndpoint(
     max_new_tokens=512,
     do_sample=False,
     huggingfacehub_api_token=hf_token,
+    timeout=120,
     streaming=True
-)
+    )
 
 model = ChatHuggingFace(llm=llm)
 
