@@ -79,3 +79,4 @@ def update_thread_name(thread_id: str, message_content: str):
                 "UPDATE chat_sessions SET title = %s WHERE thread_id = %s",
                 (new_title, thread_id)
             )
+
